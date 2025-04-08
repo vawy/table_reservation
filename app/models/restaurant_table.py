@@ -15,4 +15,10 @@ class RestaurantTable(IdMixin, TimestampMixin, Base):
     seats = Column(SmallInteger, nullable=False, default=4)
     location = Column(String(100), nullable=True, index=True)
 
-    reservations = relationship("Reservation", back_populates="restaurant_table", lazy='noload')
+    reservations = relationship(
+        argument="Reservation",
+        back_populates="restaurant_table",
+        cascade="all, delete-orphan",
+        order_by="Reservation.reservation_time",
+        lazy='noload'
+    )

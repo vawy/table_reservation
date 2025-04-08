@@ -14,7 +14,7 @@ class Reservation(IdMixin, TimestampMixin, Base):
     )
 
     customer_name = Column(String(100), nullable=False, index=True)
-    restaurant_table_id = Column(Integer, ForeignKey('restaurant_table.id'), nullable=False)
+    restaurant_table_id = Column(Integer, ForeignKey('restaurant_table.id'), ondelete="CASCADE", nullable=False)
     reservation_time = Column(DateTime, nullable=False, index=True)
     duration_minutes = Column(SmallInteger, nullable=False)
 
