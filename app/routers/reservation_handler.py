@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Request, status
 
+from app.services.reservation_service import ReservationService
+
 
 router = APIRouter(
     tags=["reservations"],
@@ -16,7 +18,9 @@ router = APIRouter(
 async def get_all(
         request: Request
 ):
-    pass
+    async with request.app.state.db.get_master_session() as session:
+        reservation_service = ReservationService(session=session, options=ReservationService.list_options)
+        return await reservation_service.get_all()
 
 
 @router.post(
@@ -41,4 +45,6 @@ async def delete_one(
         request: Request,
         model_id: int
 ):
-    pass
+    async with request.app.state.db.get_master_session() as session:
+        reservation_service = ReservationService(session=session)
+        return await reservation_service.delete_one(model_id=model_id)
