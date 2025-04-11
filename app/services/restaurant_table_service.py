@@ -14,11 +14,8 @@ from app.schemas.restaurant_table_schema import RestaurantTableCreateSchema
 
 
 class RestaurantTableService(BaseService):
-    list_options = [
-        selectinload(RestaurantTable.reservations)
-    ]
     options = [
-        *list_options
+        selectinload(RestaurantTable.reservations)
     ]
 
     def __init__(self, session, options=None):
@@ -26,11 +23,7 @@ class RestaurantTableService(BaseService):
 
 
     async def create_one(self, body: RestaurantTableCreateSchema):
-        model = RestaurantTable(
-            name=body.name,
-            seats=body.seats,
-            location=body.location
-        )
+        model = RestaurantTable(**body.model_dump())
 
         try:
             self.session.add(model)

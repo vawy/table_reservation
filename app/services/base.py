@@ -21,15 +21,13 @@ class BaseService:
         self.options = options or []
 
 
-    async def get_all(self):
+    async def get_all(self, params=None):
         query = select(self.model)
 
         if self.options:
             query = query.options(*self.options)
 
-        result = (await self.session.scalars(query)).all()
-
-        return result
+        return await paginate(self.session, query, params)
 
 
     async def get_one(self, model_id: int):

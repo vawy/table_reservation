@@ -17,13 +17,13 @@ router = APIRouter(
     status_code=status.HTTP_200_OK,
     summary="Список всех столиков",
     description="Список всех столиков",
-    response_model=list[RestaurantTableResponseSchema]
+    response_model=Page[RestaurantTableResponseSchema]
 )
 async def get_all(
         request: Request
 ):
     async with request.app.state.db.get_master_session() as session:
-        restaurant_table_service = RestaurantTableService(session=session, options=RestaurantTableService.list_options)
+        restaurant_table_service = RestaurantTableService(session=session, options=RestaurantTableService.options)
         return await restaurant_table_service.get_all()
 
 
