@@ -1,4 +1,8 @@
+from typing import Type, Optional
+
 from fastapi import HTTPException
+from fastapi_pagination.ext.sqlalchemy import paginate
+from fastapi_pagination import Params
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,7 +15,7 @@ from metadata import Base
 
 
 class BaseService:
-    def __init__(self, session: AsyncSession, model: Base, options: list[LoaderOption] | None = None):
+    def __init__(self, session: AsyncSession, model: Type[Base], options: list[LoaderOption] | None = None):
         self.session = session
         self.model = model
         self.options = options or []
@@ -24,6 +28,7 @@ class BaseService:
             query = query.options(*self.options)
 
         result = (await self.session.scalars(query)).all()
+
         return result
 
 
@@ -42,10 +47,6 @@ class BaseService:
             )
 
         return model
-
-
-    async def create_one(self, body: dict):
-        pass
 
 
     async def delete_one(self, model_id: int):

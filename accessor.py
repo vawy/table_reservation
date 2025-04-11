@@ -24,13 +24,9 @@ class PostgresAccessor:
         )
 
     async def stop(self):
-        await self.dispose()
-
-    async def dispose(self):
-        if self.engine:
-            await self.engine.dispose()
+        await self.engine.dispose()
 
     @asynccontextmanager
     async def get_master_session(self) -> AsyncGenerator[AsyncSession, None]:
-        async with self.async_session_maker() as session:
+        async with self.async_session_maker.begin() as session:
             yield session

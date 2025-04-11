@@ -5,6 +5,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 import uvicorn
 from fastapi import FastAPI
+from fastapi_pagination import add_pagination
 
 from app.utils.base import bind_routes, lifespan
 from app.routers import routes
@@ -30,6 +31,7 @@ def make_app(app_settings: Settings) -> FastAPI:
 
     logger.info("Binding routes")
     bind_routes(app=fastapi_app, routes=routes)
+    # add_pagination(fastapi_app)
 
     return fastapi_app
 

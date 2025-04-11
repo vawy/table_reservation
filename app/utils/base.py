@@ -9,7 +9,7 @@ from app.settings import settings
 
 def bind_routes(app: FastAPI, routes: list[APIRouter]):
     for route in routes:
-        app.include_router(route, prefix="/api/v1/service_desk")
+        app.include_router(route, prefix="/api/table_reservation")
 
 
 @asynccontextmanager
