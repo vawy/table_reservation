@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from pydantic import BaseModel, Field
 from app.utils.fields_constraints import NameField
@@ -6,7 +6,7 @@ from app.utils.fields_constraints import NameField
 
 class BasicReservationSchema(BaseModel):
     customer_name: NameField
-    reservation_time: datetime = Field(gt=datetime.now())
+    reservation_time: datetime = Field(gt=datetime.now(tz=timezone.utc))
     restaurant_table_id: int
     duration_minutes: int = Field(gt=0)
 

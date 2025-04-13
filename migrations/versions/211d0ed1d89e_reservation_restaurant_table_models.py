@@ -36,13 +36,11 @@ def upgrade() -> None:
     op.create_table('reservation',
     sa.Column('customer_name', sa.String(length=100), nullable=False),
     sa.Column('restaurant_table_id', sa.Integer(), nullable=False),
-    sa.Column('reservation_time', sa.DateTime(), nullable=False),
+    sa.Column('reservation_time', sa.DateTime(timezone=True), nullable=False),
     sa.Column('duration_minutes', sa.SmallInteger(), nullable=False),
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.CheckConstraint('duration_minutes > 0', name='check_duration_positive'),
-    sa.CheckConstraint('reservation_time >= CURRENT_TIMESTAMP', name='check_future_reservation'),
     sa.ForeignKeyConstraint(['restaurant_table_id'], ['restaurant_table.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )

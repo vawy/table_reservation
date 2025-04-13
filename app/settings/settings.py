@@ -1,5 +1,6 @@
 import os
 
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 
 
@@ -10,10 +11,13 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
 
-    class Config:
-        CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-        env_file = f"{CURRENT_DIR}/.env"
-        env_file_encoding = "utf-8"
+    TESTING: bool = False
+    TEST_DATABASE_URL: str = "sqlite+aiosqlite:///:memory:"
+
+    model_config = ConfigDict(
+        env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"),
+        env_file_encoding="utf-8"
+    )
 
     @property
     def db_settings(self):
